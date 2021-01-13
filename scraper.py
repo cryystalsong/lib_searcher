@@ -69,7 +69,7 @@ def parseEachContainer(containers, library, library_domain_url):
         result["library_source"] = library
         result["book_link"] = book_link
         result["availability"] = availability
-        
+        result["book_type_detail"] = container.find("div",{"class": "cp-format-info manifestation-item-format-info"}).contents[0].text
         result["img_src"] = getBookImg(book_link) #TODO: fetch from lazy loading
 
         results.append(result)

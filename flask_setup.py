@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 #jsonify take data and automatically convert to JSON
 
-from scarper import main
+from scraper import main
 
 app = Flask(__name__)
 
