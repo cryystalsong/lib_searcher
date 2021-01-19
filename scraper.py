@@ -15,9 +15,9 @@ def generateBibliocommonsDomain(library_domain):
 
 def set_up_chromedriver(local):
     chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--headless") # avoids opening browser 
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--no-sandbox")
 
     if local: 
         from webdriver_manager.chrome import ChromeDriverManager
