@@ -100,5 +100,7 @@ def main(library, search_keywords):
     response_object["totalPages"] = len(pg_soup.find("section", {"class": "bottom-controls"}).div.ul.contents) - 2 #2 of the contents are the forward and backward button
     
     response_object["results"] = parseEachContainer(result_containers, library)
+    
+    driver.close()
 
     return response_object
