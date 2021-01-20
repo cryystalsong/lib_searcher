@@ -1,6 +1,6 @@
 from selenium_scraper import execute_search
 
-def getSearchURL(library, search_keywords):
+def getSearchURL(library, search_keywords, page=None):
     search_query = search_keywords.replace(" ","+")
 
     library_search_urls ={
@@ -15,10 +15,15 @@ def getSearchURL(library, search_keywords):
         
     return library_search_urls[library]     
 
-def main(library, search_keywords):    
-    search_url = getSearchURL(library, search_keywords)
+def main(library, search_keywords, page=1):    
 
+    if page == 1: 
+        search_url = getSearchURL(library, search_keywords)
+    else: 
+        search_url = getSearchURL(library, search_keywords, page)
+           
     response_object = execute_search(search_url, dev_mode=False)       
-    
+    response_object["currentPage"] = page 
     response_object["library"] = library
+
     return response_object

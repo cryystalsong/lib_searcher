@@ -15,8 +15,13 @@ def home():
 def get_results():
     library = request.args.get("library")
     search_keywords = request.args.get("search_keywords")
+    page = request.args.get("page")
 
-    results = main(library,search_keywords)
+    if page is None: 
+        results = main(library,search_keywords)
+    else: 
+        results = main(library,search_keywords,page)
+
     return jsonify(results)
 
 if __name__ == '__main__':
