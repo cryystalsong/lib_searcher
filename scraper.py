@@ -23,7 +23,7 @@ def main(library, search_keywords, page=1):
         search_url = getSearchURL(library, search_keywords, page)
            
     response_object = execute_search(search_url, dev_mode=False)       
-    response_object["currentPage"] = page 
+    response_object["current_page"] = page 
     response_object["library"] = library
 
     return response_object

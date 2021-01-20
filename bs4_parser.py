@@ -6,8 +6,7 @@ def parseLibraryPage(html_page):
 
     response_object = {
         "library": "",
-        "currentPage": "",
-        "totalPages": "",
+        "current_page": "",
         "current_result_count": "",
         "total_result_count": "",
         "results": []
@@ -20,9 +19,6 @@ def parseLibraryPage(html_page):
     total_result_count = pg_soup.find("span", {"class": "pagination-text"}).text.split(' ')[-2]
     response_object["total_result_count"] = total_result_count
     response_object["current_result_count"] = len(result_containers)
-
-    response_object["totalPages"] = len(pg_soup.find("section", {"class": "bottom-controls"}).div.ul.contents) - 2 #2 of the contents are the forward and backward button
-    
     response_object["results"] = parseEachContainer(result_containers)
     
     return response_object
