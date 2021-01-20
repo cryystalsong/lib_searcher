@@ -3,16 +3,6 @@ from selenium import webdriver
 import os
 from bs4 import BeautifulSoup as soup 
 
-bibliocommons_domains = {
-    "VPL": "vpl",
-    "NWPL": "newwestminster",
-    "RPL": "yourlibrary",
-    "BPL": "burnaby"
-}
-
-def generateBibliocommonsDomain(library_domain):
-    return "https://{}.bibliocommons.com".format(library_domain)
-
 def set_up_chromedriver(local):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--no-sandbox")
@@ -27,15 +17,13 @@ def set_up_chromedriver(local):
     return webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
 # returns a list of result
-def parseEachContainer(contents, library):    
-    library_domain_url = generateBibliocommonsDomain(bibliocommons_domains[library]) 
+def parseEachContainer(contents):    
     results = []
 
     for content in contents: 
         result = {
             "title": "",
             "author": "",
-            "library_source": "",
             "book_link": "",
             "availability": "",
             "img_src": ""
@@ -49,12 +37,14 @@ def parseEachContainer(contents, library):
         except:
             result["author"] = None
 
+        try:             
+            result["availability"] = content.find("div",{"class": "manifestation-item-availability-block-wrap"}).span.text
+        except:
+            result["availability"] = "Availability cannot be retrieved"
+        
         book_link = content.find("div",{"class": "jacket-cover-wrap hidden-md hidden-lg"}).a["href"]
-        result["book_link"] = library_domain_url + book_link
-
-        result["availability"] = content.find("div",{"class": "manifestation-item-availability-block-wrap"}).span.text
+        result["book_link"] = book_link
         result["book_type_detail"] = content.find("div",{"class": "cp-format-info manifestation-item-format-info"}).contents[0].text
-        result["library_source"] = library
 
         results.append(result)
 
@@ -73,10 +63,8 @@ def getSearchURL(library, search_keywords):
     return library_search_urls[library]
 
 
-def main(library, search_keywords):
-    driver = set_up_chromedriver(local=False)
-    
-    search_url = getSearchURL(library, search_keywords)    
+def execute_search(search_url):
+    driver = set_up_chromedriver(local=False) 
     driver.get(search_url)
 
     page = driver.page_source
@@ -85,7 +73,6 @@ def main(library, search_keywords):
 
     response_object = {}
 
-    response_object["library"] = library
     response_object["results"] = []  
 
     if len(result_containers) <= 0:
@@ -99,8 +86,16 @@ def main(library, search_keywords):
     response_object["currentPage"] = 1  
     response_object["totalPages"] = len(pg_soup.find("section", {"class": "bottom-controls"}).div.ul.contents) - 2 #2 of the contents are the forward and backward button
     
-    response_object["results"] = parseEachContainer(result_containers, library)
+    response_object["results"] = parseEachContainer(result_containers)
     
     driver.close()
 
+    return response_object
+
+def main(library, search_keywords):    
+    search_url = getSearchURL(library, search_keywords)
+
+    response_object = execute_search(search_url)       
+    
+    response_object["library"] = library
     return response_object
