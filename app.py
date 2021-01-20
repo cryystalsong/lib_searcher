@@ -4,17 +4,8 @@ from flask_cors import CORS
 from scraper import main
 
 app = Flask(__name__)
-
-api_origin_cors_config = {
-    "origins": [
-        'https://libsearcher.herokuapp.com'
-    ]
-}
-
-CORS(app, resources={
-        r"/search/*": api_origin_cors_config
-    }
-)
+# CORS(app, origins = ['https://libsearcher.herokuapp.com/'])
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/')
 def home():
