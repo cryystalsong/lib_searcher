@@ -1,20 +1,10 @@
 from flask import Flask, request, jsonify
 #jsonify take data and automatically convert to JSON
-from flask_cors import CORS
 from scraper import main
+import cors
 
 app = Flask(__name__)
-
-api_origin_cors_config = {
-    "origins": [
-        'https://libsearcher.herokuapp.com'
-    ]
-}
-
-CORS(app, resources={
-        r"/search/*": api_origin_cors_config
-    }
-)
+cors.setup(app)
 
 @app.route('/')
 def home():
