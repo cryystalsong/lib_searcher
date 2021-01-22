@@ -7,7 +7,11 @@ def getSearchURL(library, search_keywords, page=None):
         "VPL": "https://vpl.bibliocommons.com/v2/search?query="+search_query+"&searchType=smart",
         "NWPL": "https://newwestminster.bibliocommons.com/v2/search?query="+search_query+"&searchType=smart",
         "RPL": "https://yourlibrary.bibliocommons.com/v2/search?query="+search_query+"&searchType=keyword",
-        "BPL": "https://burnaby.bibliocommons.com/v2/search?query="+search_query+"&searchType=smart"
+        "BPL": "https://burnaby.bibliocommons.com/v2/search?query="+search_query+"&searchType=smart",
+        "surreyLibraries": "https://surrey.bibliocommons.com/v2/search?query="+search_query+"&searchType=smart",
+        "NVDPL": "https://nvdpl.bibliocommons.com/v2/search?query="+search_query+"&searchType=smart",
+        "FVRL": "https://fvrl.bibliocommons.com/v2/search?query="+search_query+"&searchType=smart",
+        "PMPL": "https://portmoody.bibliocommons.com/v2/search?query="+search_query+"&searchType=keyword"
     }  
 
     # user given library was not defined
