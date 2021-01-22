@@ -10,6 +10,12 @@ def getSearchURL(library, search_keywords, page=None):
         "BPL": "https://burnaby.bibliocommons.com/v2/search?query="+search_query+"&searchType=smart"
     }  
 
+    # user given library was not defined
+    try:
+        library_search_urls[library]
+    except:
+        raise Exception("'{}' is not a supported library".format(library))
+
     if page: 
         return library_search_urls[library] + "&pagination_page={}".format(page) 
         
@@ -17,13 +23,16 @@ def getSearchURL(library, search_keywords, page=None):
 
 def main(library, search_keywords, page=1):    
 
-    if page == 1: 
-        search_url = getSearchURL(library, search_keywords)
-    else: 
-        search_url = getSearchURL(library, search_keywords, page)
-           
-    response_object = execute_search(search_url)       
-    response_object["current_page"] = page 
-    response_object["library"] = library
+    try: 
+        if page == 1: 
+            search_url = getSearchURL(library, search_keywords)
+        else: 
+            search_url = getSearchURL(library, search_keywords, page)
 
-    return response_object
+        response_object = execute_search(search_url)       
+        response_object["current_page"] = page 
+        response_object["library"] = library
+        return response_object
+    
+    except Exception as e: 
+        raise e
