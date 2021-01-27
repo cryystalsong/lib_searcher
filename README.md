@@ -11,6 +11,10 @@ See website: https://libsearcher.herokuapp.com/
 
 ## How to run this project locally
 
+### Install project packages 
+
+`pip install -r requirements.txt`
+
 ### Set your flask environment variable to development
 
 `$env:FLASK_ENV = "development"` powershell (windows)
