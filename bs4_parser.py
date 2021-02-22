@@ -45,7 +45,7 @@ def parseEachContainer(contents):
             result["author"] = None
 
         try:             
-            result["availability"] = content.find("div",{"class": "manifestation-item-availability-block-wrap"}).span.text
+            result["availability"] = content.find("div",{"class": "manifestation-item-availability-block-wrap"}).span.text.strip()
         except:
             result["availability"] = "Availability cannot be retrieved"
         
